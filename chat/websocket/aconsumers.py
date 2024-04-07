@@ -9,4 +9,9 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 class AsyncConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
+        print('connect')
+
+        for i in range(10000):
+            await self.channel_layer.group_add(f'room_{i}', self.channel_name)
+
         await self.accept()

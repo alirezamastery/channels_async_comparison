@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'chat',
 
+    'daphne',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,8 +69,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'channels_async.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -118,3 +118,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# WSGI_APPLICATION = 'channels_async.wsgi.application'
+ASGI_APPLICATION = 'channels_async.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        # 'BACKEND': 'channels_redis.pubsub.RedisPubSubChannelLayer',
+        'CONFIG':  {
+            'hosts':        [('127.0.0.1', 6379)],
+            'capacity':     1000,
+            # 'expiry':   10
+            'group_expiry': 3700,
+        },
+    },
+}
